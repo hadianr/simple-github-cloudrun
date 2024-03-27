@@ -39,9 +39,9 @@ jobs:
           credentials_json: '${{ secrets.GCLOUD_SERVICE_KEY }}' # Replace with the name of your GitHub Actions secret
 
     # Build the Docker image using Cloud Build
-      - name: Build Docker Image
-        run: |
-          gcloud builds submit --tag "gcr.io/${{ env.PROJECT_ID }}/${{ env.IMAGE_NAME }}:latest" .
+    #   - name: Build Docker Image
+    #     run: |
+    #       gcloud builds submit --tag "gcr.io/${{ env.PROJECT_ID }}/${{ env.IMAGE_NAME }}:latest" .
 
       - name: Deploy to Cloud Run
         id: deploy

@@ -41,6 +41,7 @@ jobs:
         with:
           service: ${{ env.SERVICE }}
           region: ${{ env.REGION }}
+          image: 'gcr.io/cloudrun/hello'
           # NOTE: If required, update to the appropriate source folder
           source: ./
 

@@ -31,13 +31,13 @@ jobs:
       # NOTE: Alternative option - authentication via credentials json
       - name: Google Auth
         id: auth
-        uses: 'google-github-actions/auth@v0'
+        uses: 'google-github-actions/auth@v2'
         with:
-          credentials_json: '${{ secrets.GCLOUD_SERVICE_KEY }}'
+          credentials_json: '${{ secrets.GCLOUD_SERVICE_KEY }}' # Replace with the name of your GitHub Actions secret
 
       - name: Deploy to Cloud Run
         id: deploy
-        uses: google-github-actions/deploy-cloudrun@v0
+        uses: google-github-actions/deploy-cloudrun@v2
         with:
           service: ${{ env.SERVICE }}
           region: ${{ env.REGION }}

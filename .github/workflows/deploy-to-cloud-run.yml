@@ -1,4 +1,4 @@
-name: Deploy to Cloud Run from Source Github
+name: Deploy to Cloud Run from Image
 
 on:
   push:

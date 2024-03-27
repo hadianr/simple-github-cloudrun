@@ -8,8 +8,10 @@ env:
   PROJECT_ID: gdsc-widyatama-cloud # TODO: update Google Cloud project id
   SERVICE: simple-app-github # TODO: update Cloud Run service name
   REGION: asia-southeast2 # TODO: update Cloud Run service region
+  IMAGE_NAME: simpleapp
 
 jobs:
+
   deploy:
     # Add 'id-token' with the intended permissions for workload identity federation
     permissions:
@@ -18,6 +20,7 @@ jobs:
 
     runs-on: ubuntu-latest
     steps:
+        
       - name: Checkout
         uses: actions/checkout@v2
 
@@ -35,23 +38,18 @@ jobs:
         with:
           credentials_json: '${{ secrets.GCLOUD_SERVICE_KEY }}' # Replace with the name of your GitHub Actions secret
 
+    # Build the Docker image using Cloud Build
+      - name: Build Docker Image
+        run: |
+          gcloud builds submit --tag "gcr.io/${{ env.PROJECT_ID }}/${{ env.IMAGE_NAME }}:latest" .
+
       - name: Deploy to Cloud Run
         id: deploy
-        run: |
-          gcloud run deploy "${{ env.SERVICE }}" \
-            --project="${{ env.PROJECT_ID }}" \
-            --region=${{ env.REGION }}  # Replace with desired region (optional)
-            --platform managed \
-            --allow-unauthenticated  # Adjust based on access requirements
-            --source="."
-        # id: deploy
-        # uses: google-github-actions/deploy-cloudrun@v2
-        # with:
-        #   service: ${{ env.SERVICE }}
-        #   region: ${{ env.REGION }}
-        #   image: 'gcr.io/cloudrun/hello'
-        #   # NOTE: If required, update to the appropriate source folder
-        #   source: ./
+        uses: google-github-actions/deploy-cloudrun@v2
+        with:
+          service: ${{ env.SERVICE }}
+          region: ${{ env.REGION }}
+          image: 'gcr.io/${{ env.PROJECT_ID }}/${{ env.IMAGE_NAME }}:latest'
 
       # If required, use the Cloud Run url output in later steps
       - name: Show Output
